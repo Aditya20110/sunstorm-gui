@@ -15,5 +15,5 @@ sudo bash install.sh
 # Made by Aditya:)
 
 # Credits:
-[verygenericname](https://github.com/verygenericname) - [SSHRD_Script](https://github.com/verygenericname/SSHRD_Script)
-[M1n1Exploit](https://github.com/Mini-Exploit) - Some code from ra1nstorm
+-[verygenericname](https://github.com/verygenericname) - [SSHRD_Script](https://github.com/verygenericname/SSHRD_Script)
+-[M1n1Exploit](https://github.com/Mini-Exploit) - Some code from ra1nstorm
