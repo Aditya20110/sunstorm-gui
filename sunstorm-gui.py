@@ -52,7 +52,7 @@ class SunstormGUI(QMainWindow):
         self.baseband_checkbox = QCheckBox("No Baseband", self)
         self.baseband_checkbox.setGeometry(10, 230, 150, 30)
 
-        self.generate_button = QPushButton("Generate Command", self)
+        self.generate_button = QPushButton("Start!", self)
         self.generate_button.setGeometry(120, 260, 150, 30)
         self.generate_button.clicked.connect(self.generate_command)
 
