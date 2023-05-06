@@ -8,7 +8,7 @@ git clone -b mac-os https://github.com/Aditya20110/sunst0rm-gui --recursive
 python3 sunstorm-gui.py
 
 # command to run install.sh
-bash install.sh
+./install.sh
 
 # if u have any issue,open issue,if u want to contribute, make pull request
 
@@ -16,6 +16,7 @@ bash install.sh
 # Made by Aditya:)
 
 # Credits:
+- [Aditya](github.com/aditya20110) Developer and owner :)
 - [verygenericname](https://github.com/verygenericname) - [SSHRD_Script](https://github.com/verygenericname/SSHRD_Script)
 - [M1n1Exploit](https://github.com/Mini-Exploit) - Some code from ra1nstorm
 - [Mineek](https://github.com/mineek) - for sunstorm
