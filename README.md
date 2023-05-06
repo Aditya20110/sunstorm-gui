@@ -1,12 +1,15 @@
 # sunst0rm-gui
 A GUI iOS Tether Downgrader 
 
+# This branch is for mac os.and if you dont know how to clone it, type-
+
+# git clone -b mac-os https://github.com/Aditya20110/sunst0rm-gui --recursive
 
 # command to run gui
-sudo python3 sunstorm-gui.py
+python3 sunstorm-gui.py
 
 # command to run install.sh
-sudo bash install.sh
+bash install.sh
 
 # if u have any issue,open issue,if u want to contribute, make pull request
 
