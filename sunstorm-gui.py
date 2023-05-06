@@ -1,84 +1,99 @@
 import sys
-import subprocess
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QCheckBox, QPushButton, QVBoxLayout, QHBoxLayout, QRadioButton, QFileDialog, QGridLayout
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QCheckBox, QRadioButton, QLineEdit, QPushButton, QFileDialog
 
-class SunstormGUI(QWidget):
+class SunstormGUI(QMainWindow):
     def __init__(self):
         super().__init__()
-
         self.setWindowTitle("Sunstorm GUI")
+        self.setGeometry(100, 100, 400, 300)
 
-        # Create input fields
-        self.ipsw_label = QLabel("IPSW Path:")
-        self.ipsw_lineedit = QLineEdit()
-        self.ipsw_button = QPushButton("Choose IPSW")
-        self.ipsw_button.clicked.connect(self.browse_ipsw)
+        self.ipsw_label = QLabel("IPSW Path:", self)
+        self.ipsw_label.setGeometry(10, 10, 100, 30)
 
-        self.blob_label = QLabel("Blob Path:")
-        self.blob_lineedit = QLineEdit()
-        self.blob_button = QPushButton("Choose Blob")
-        self.blob_button.clicked.connect(self.browse_blob)
+        self.ipsw_path = QLineEdit(self)
+        self.ipsw_path.setGeometry(120, 10, 180, 30)
 
-        self.kpp_checkbox = QCheckBox("KPP")
-        self.restore_radio = QRadioButton("Restore")
-        self.boardconfig_label = QLabel("Boardconfig:")
-        self.boardconfig_lineedit = QLineEdit()
-        self.boot_radio = QRadioButton("Boot")
-        self.identifier_label = QLabel("Identifier:")
-        self.identifier_lineedit = QLineEdit()
-        self.identifier_lineedit.setEnabled(True)
-        self.no_baseband_checkbox = QCheckBox("No baseband")
+        self.ipsw_button = QPushButton("Browse", self)
+        self.ipsw_button.setGeometry(310, 10, 80, 30)
+        self.ipsw_button.clicked.connect(self.select_ipsw)
 
-        self.execute_button = QPushButton("Execute")
-        self.execute_button.clicked.connect(self.execute_command)
+        self.blob_label = QLabel("Blob Path:", self)
+        self.blob_label.setGeometry(10, 50, 100, 30)
 
-        # Create layout and add widgets
-        layout = QGridLayout()
-        layout.addWidget(self.ipsw_label, 0, 0)
-        layout.addWidget(self.ipsw_lineedit, 0, 1)
-        layout.addWidget(self.ipsw_button, 0, 2)
-        layout.addWidget(self.blob_label, 1, 0)
-        layout.addWidget(self.blob_lineedit, 1, 1)
-        layout.addWidget(self.blob_button, 1, 2)
-        layout.addWidget(self.kpp_checkbox, 2, 0)
-        layout.addWidget(self.restore_radio, 3, 0)
-        layout.addWidget(self.boardconfig_label, 4, 0)
-        layout.addWidget(self.boardconfig_lineedit, 4, 1)
-        layout.addWidget(self.boot_radio, 5, 0)
-        layout.addWidget(self.identifier_label, 6, 0)
-        layout.addWidget(self.identifier_lineedit, 6, 1)
-        layout.addWidget(self.no_baseband_checkbox, 7, 0)
-        layout.addWidget(self.execute_button, 8, 1)
+        self.blob_path = QLineEdit(self)
+        self.blob_path.setGeometry(120, 50, 180, 30)
 
-        self.setLayout(layout)
+        self.blob_button = QPushButton("Browse", self)
+        self.blob_button.setGeometry(310, 50, 80, 30)
+        self.blob_button.clicked.connect(self.select_blob)
 
-    def browse_ipsw(self):
-        file_path, _ = QFileDialog.getOpenFileName(self, 'Open IPSW File', '', 'IPSW Files (*.ipsw)')
-        if file_path:
-            self.ipsw_lineedit.setText(file_path)
+        self.kpp_checkbox = QCheckBox("KPP", self)
+        self.kpp_checkbox.setGeometry(10, 100, 100, 30)
 
-    def browse_blob(self):
-        file_path, _ = QFileDialog.getOpenFileName(self, 'Open Blob File', '', 'Blob Files (*.shsh2)')
-        if file_path:
-            self.blob_lineedit.setText(file_path)
+        self.restore_radio = QRadioButton("Restore", self)
+        self.restore_radio.setGeometry(120, 100, 100, 30)
 
-    def execute_command(self):
-        command = ['sudo', 'python3', './sunstorm.py', '-i', self.ipsw_lineedit.text(), '-t', self.blob_lineedit.text()]
-        if self.kpp_checkbox.isChecked():
-            command.append('--kpp')
+        self.boot_radio = QRadioButton("Boot", self)
+        self.boot_radio.setGeometry(230, 100, 100, 30)
+
+        self.boardconfig_label = QLabel("BoardConfig:", self)
+        self.boardconfig_label.setGeometry(10, 150, 100, 30)
+
+        self.boardconfig = QLineEdit(self)
+        self.boardconfig.setGeometry(120, 150, 150, 30)
+
+        self.identifier_label = QLabel("Identifier:", self)
+        self.identifier_label.setGeometry(10, 190, 100, 30)
+
+        self.identifier = QLineEdit(self)
+        self.identifier.setGeometry(120, 190, 150, 30)
+        self.identifier.setEnabled(True)
+
+        self.baseband_checkbox = QCheckBox("No Baseband", self)
+        self.baseband_checkbox.setGeometry(10, 230, 150, 30)
+
+        self.generate_button = QPushButton("Generate Command", self)
+        self.generate_button.setGeometry(120, 260, 150, 30)
+        self.generate_button.clicked.connect(self.generate_command)
+
+    def select_ipsw(self):
+        options = QFileDialog.Options()
+        ipsw_path, _ = QFileDialog.getOpenFileName(self, "Select IPSW", "", "IPSW Files (*.ipsw)", options=options)
+        if ipsw_path:
+            self.ipsw_path.setText(ipsw_path)
+
+    def select_blob(self):
+        options = QFileDialog.Options()
+        blob_path, _ = QFileDialog.getOpenFileName(self, "Select Blob", "", "Blob Files (*.shsh2)", options=options)
+        if blob_path:
+            self.blob_path.setText(blob_path)
+
+    def generate_command(self):
+        ipsw = self.ipsw_path.text()
+        blob = self.blob_path.text()
+        command = "sudo python3 sunstorm.py -i {} -t {}".format(ipsw, blob)
+        
         if self.restore_radio.isChecked():
-            command.extend(['-r', '-d', self.boardconfig_lineedit.text()])
-        if self.boot_radio.isChecked():
-            command.extend(['-b', '-d', self.boardconfig_lineedit.text()])
-        if self.identifier_lineedit.isEnabled() and self.identifier_lineedit.text():
-            command.extend(['-id', self.identifier_lineedit.text()])
-        if self.no_baseband_checkbox.isChecked():
-            command.append('--skip-baseband')
-        subprocess.run(command)
+           self.identifier.setEnabled(False)
 
-if __name__ == '__main__':
+        if self.kpp_checkbox.isChecked():
+            command += " --kpp"
+
+        if self.restore_radio.isChecked():
+            boardconfig = self.boardconfig.text()
+            command += " -r -d {}".format(boardconfig)
+            
+        if self.boot_radio.isChecked():
+            boardconfig = self.boardconfig.text()
+            command += " -b -d {} -id {}".format(boardconfig, self.identifier.text())
+
+        if self.baseband_checkbox.isChecked():
+            command += " --skip-baseband"
+
+        print(command)  # Replace with the code to execute the command
+
+if __name__ == "__main__":
     app = QApplication(sys.argv)
-    gui = SunstormGUI()
-    gui.show()
+    window = SunstormGUI()
+    window.show()
     sys.exit(app.exec_())
