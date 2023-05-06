@@ -1,7 +1,6 @@
 # sunst0rm-gui
 A GUI iOS Tether Downgrader 
 
-# The gui is working on linux for now, working on mac os support
 
 # command to run gui
 sudo python3 sunstorm-gui.py
