@@ -32,6 +32,7 @@ class SunstormGUI(QMainWindow):
 
         self.restore_radio = QRadioButton("Restore", self)
         self.restore_radio.setGeometry(120, 100, 100, 30)
+        self.restore_radio.toggled.connect(self.restore_toggled)
 
         self.boot_radio = QRadioButton("Boot", self)
         self.boot_radio.setGeometry(230, 100, 100, 30)
@@ -47,7 +48,7 @@ class SunstormGUI(QMainWindow):
 
         self.identifier = QLineEdit(self)
         self.identifier.setGeometry(120, 190, 150, 30)
-        self.identifier.setEnabled(True)
+        self.identifier.setEnabled(False)
 
         self.baseband_checkbox = QCheckBox("No Baseband", self)
         self.baseband_checkbox.setGeometry(10, 230, 150, 30)
@@ -64,25 +65,24 @@ class SunstormGUI(QMainWindow):
 
     def select_blob(self):
         options = QFileDialog.Options()
-        blob_path, _ = QFileDialog.getOpenFileName(self, "Select Blob", "", "Blob Files (*.shsh2)", options=options)
+        blob_path, _ = QFileDialog.getOpenFileName(self, "Select Blob", "", "Blob Files (*.blob)", options=options)
         if blob_path:
             self.blob_path.setText(blob_path)
+
+    def restore_toggled(self, checked):
+        self.identifier.setEnabled(not checked)
 
     def generate_command(self):
         ipsw = self.ipsw_path.text()
         blob = self.blob_path.text()
-        command = "sudo python3 sunstorm.py -i {} -t {}".format(ipsw, blob)
-        
-        if self.restore_radio.isChecked():
-           self.identifier.setEnabled(False)
+        command = "python3 sunstorm.py -i {} -t {}".format(ipsw, blob)
 
         if self.kpp_checkbox.isChecked():
             command += " --kpp"
 
         if self.restore_radio.isChecked():
-            boardconfig = self.boardconfig.text()
-            command += " -r -d {}".format(boardconfig)
-            
+           command += " -r -d {}".format(boardconfig)
+
         if self.boot_radio.isChecked():
             boardconfig = self.boardconfig.text()
             command += " -b -d {} -id {}".format(boardconfig, self.identifier.text())

@@ -2,50 +2,28 @@
 
 set -e
 
-# Determine the package manager
-if command -v apt-get >/dev/null 2>&1; then
-    PM="apt-get"
-elif command -v dnf >/dev/null 2>&1; then
-    PM="dnf"
-elif command -v yum >/dev/null 2>&1; then
-    PM="yum"
+# Check if Homebrew is installed
+if command -v brew >/dev/null 2>&1; then
+    PM="brew"
 else
-    echo "Error: Package manager not found"
+    echo "Error: Homebrew not found"
     exit 1
 fi
 
 # Install required packages
-if [ "$PM" = "apt-get" ]; then
-    # Debian/Ubuntu-based distributions
-    echo "Updating package lists"
-    sudo $PM update -qq >/dev/null
-    echo "Installing required packages"
-    sudo $PM install -yqq build-essential libssl-dev libcurl4-openssl-dev libreadline-dev \
-        libusb-1.0-0-dev libusbmuxd-dev libplist-dev libzip-dev curl libbz2-dev cmake \
-        python3-pip python3-dev libncurses-dev unzip libtinfo5 libxml2-dev libssl-dev \
-        libffi-dev libbz2-dev liblzma-dev uuid-dev libfuse-dev
-    # Install hfsplus package
-    if command -v hfsplus >/dev/null 2>&1; then
-        echo "hfsplus already installed"
-    else
-        echo "Installing hfsplus package"
-        sudo $PM install -yqq hfsprogs
-    fi
-elif [ "$PM" = "dnf" ] || [ "$PM" = "yum" ]; then
-    # Red Hat/CentOS-based distributions
-    echo "Updating package lists"
-    sudo $PM update -y >/dev/null
-    echo "Installing required packages"
-    sudo $PM install -y gcc gcc-c++ openssl-devel readline-devel libusb-devel libplist-devel \
-        curl-devel libxml2-devel libzip-devel libcurl-devel bzip2-devel cmake python3-pip \
-        ncurses-devel unzip libtinfo libffi-devel liblzma-devel uuid-devel fuse-devel
-    # Install hfsplus package
-    if command -v hfsplus >/dev/null 2>&1; then
-        echo "hfsplus already installed"
-    else
-        echo "Installing hfsplus package"
-        sudo $PM install -y hfsplus-tools
-    fi
+echo "Updating package lists"
+sudo $PM update >/dev/null
+echo "Installing required packages"
+sudo $PM install build-essential openssl libssl-dev curl libbz2 libbz2-dev readline \
+    libreadline-dev libusb libusb-dev libxml2 libxml2-dev libzip libzip-dev cmake \
+    python3 ncurses unzip libffi libffi-dev liblzma liblzma-dev ossp-uuid
+
+# Install hfsplus package
+if command -v hfsplus >/dev/null 2>&1; then
+    echo "hfsplus already installed"
+else
+    echo "Installing hfsplus package"
+    brew install hfsprogs
 fi
 
 # Install program_list packages
@@ -59,5 +37,5 @@ for program in "${program_list[@]}"; do
     fi
 done
 
-echo "Done! All dependencies are installed"
-echo "Made by Aditya:)"
+echo "Done! thanks for using GUI"
+echo "Made by Aditya :)"
