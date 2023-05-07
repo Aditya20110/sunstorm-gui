@@ -2,6 +2,17 @@
 
 set -e
 
+program_list=(
+    'futurerestore'
+    'img4tool'
+    'Kernel64Patcher'
+    'iBoot64Patcher'
+    'ldid'
+    'asr64_patcher'
+    'restored_external64_patcher'
+    'hfsplus'
+)
+
 # Check if Homebrew is installed
 if command -v brew >/dev/null 2>&1; then
     PM="brew"
@@ -37,5 +48,5 @@ for program in "${program_list[@]}"; do
     fi
 done
 
-echo "Done! thanks for using GUI"
+echo "Done! Thanks for using GUI"
 echo "Made by Aditya :)"
