@@ -12,6 +12,7 @@ python3 sunstorm-gui.py
 
 # if u have any issue,open issue,if u want to contribute, make pull request
 
+# guide for gui is here https://youtu.be/omqwbnMOZoI
 
 # Made by Aditya:)
 
