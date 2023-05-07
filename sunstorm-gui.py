@@ -1,5 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QCheckBox, QRadioButton, QLineEdit, QPushButton, QFileDialog
+import subprocess
 
 class SunstormGUI(QMainWindow):
     def __init__(self):
@@ -65,7 +66,7 @@ class SunstormGUI(QMainWindow):
 
     def select_blob(self):
         options = QFileDialog.Options()
-        blob_path, _ = QFileDialog.getOpenFileName(self, "Select Blob", "", "Blob Files (*.blob)", options=options)
+        blob_path, _ = QFileDialog.getOpenFileName(self, "Select Blob", "", "Blob Files (*.shsh2)", options=options)
         if blob_path:
             self.blob_path.setText(blob_path)
 
@@ -75,15 +76,15 @@ class SunstormGUI(QMainWindow):
     def generate_command(self):
         ipsw = self.ipsw_path.text()
         blob = self.blob_path.text()
-        command = "python3 sunstorm.py -i {} -t {}".format(ipsw, blob)
+        command = "sudo python3 sunstorm.py -i {} -t {}".format(ipsw, blob)
 
         if self.kpp_checkbox.isChecked():
             command += " --kpp"
 
         if self.restore_radio.isChecked():
-           command += " -r -d {}".format(boardconfig)
-
-        if self.boot_radio.isChecked():
+            boardconfig = self.boardconfig.text()
+            command += " -r -d {}".format(boardconfig)
+        elif self.boot_radio.isChecked():
             boardconfig = self.boardconfig.text()
             command += " -b -d {} -id {}".format(boardconfig, self.identifier.text())
 
@@ -91,6 +92,8 @@ class SunstormGUI(QMainWindow):
             command += " --skip-baseband"
 
         print(command)  # Replace with the code to execute the command
+        subprocess.call(command, shell=True)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
