@@ -2,6 +2,17 @@
 
 set -e
 
+program_list=(
+    'futurerestore'
+    'img4tool'
+    'Kernel64Patcher'
+    'iBoot64Patcher'
+    'ldid'
+    'asr64_patcher'
+    'restored_external64_patcher'
+    'hfsplus'
+)
+
 # Determine the package manager
 if command -v apt-get >/dev/null 2>&1; then
     PM="apt-get"
@@ -58,6 +69,10 @@ for program in "${program_list[@]}"; do
         sudo pip3 install "$program"
     fi
 done
+
+# install pyqt5
+echo "installing pyqt5"
+pip install pyqt5
 
 echo "Done! All dependencies are installed"
 echo "Made by Aditya:)"
