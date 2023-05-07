@@ -1,5 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QCheckBox, QRadioButton, QLineEdit, QPushButton, QFileDialog
+import subprocess
 
 class SunstormGUI(QMainWindow):
     def __init__(self):
@@ -32,6 +33,7 @@ class SunstormGUI(QMainWindow):
 
         self.restore_radio = QRadioButton("Restore", self)
         self.restore_radio.setGeometry(120, 100, 100, 30)
+        self.restore_radio.toggled.connect(self.restore_toggled)
 
         self.boot_radio = QRadioButton("Boot", self)
         self.boot_radio.setGeometry(230, 100, 100, 30)
@@ -47,7 +49,7 @@ class SunstormGUI(QMainWindow):
 
         self.identifier = QLineEdit(self)
         self.identifier.setGeometry(120, 190, 150, 30)
-        self.identifier.setEnabled(True)
+        self.identifier.setEnabled(False)
 
         self.baseband_checkbox = QCheckBox("No Baseband", self)
         self.baseband_checkbox.setGeometry(10, 230, 150, 30)
@@ -68,13 +70,13 @@ class SunstormGUI(QMainWindow):
         if blob_path:
             self.blob_path.setText(blob_path)
 
+    def restore_toggled(self, checked):
+        self.identifier.setEnabled(not checked)
+
     def generate_command(self):
         ipsw = self.ipsw_path.text()
         blob = self.blob_path.text()
         command = "sudo python3 sunstorm.py -i {} -t {}".format(ipsw, blob)
-        
-        if self.restore_radio.isChecked():
-           self.identifier.setEnabled(False)
 
         if self.kpp_checkbox.isChecked():
             command += " --kpp"
@@ -82,8 +84,7 @@ class SunstormGUI(QMainWindow):
         if self.restore_radio.isChecked():
             boardconfig = self.boardconfig.text()
             command += " -r -d {}".format(boardconfig)
-            
-        if self.boot_radio.isChecked():
+        elif self.boot_radio.isChecked():
             boardconfig = self.boardconfig.text()
             command += " -b -d {} -id {}".format(boardconfig, self.identifier.text())
 
@@ -91,6 +92,8 @@ class SunstormGUI(QMainWindow):
             command += " --skip-baseband"
 
         print(command)  # Replace with the code to execute the command
+        subprocess.call(command, shell=True)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
