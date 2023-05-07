@@ -22,10 +22,10 @@ else
 fi
 
 # Install required packages
-echo "Updating package lists"
-sudo $PM update >/dev/null
+echo "Updating Homebrew"
+brew update >/dev/null
 echo "Installing required packages"
-sudo $PM install build-essential openssl libssl-dev curl libbz2 libbz2-dev readline \
+brew install build-essential openssl libssl-dev curl libbz2 libbz2-dev readline \
     libreadline-dev libusb libusb-dev libxml2 libxml2-dev libzip libzip-dev cmake \
     python3 ncurses unzip libffi libffi-dev liblzma liblzma-dev ossp-uuid
 
@@ -37,6 +37,10 @@ else
     brew install hfsprogs
 fi
 
+# Install PyQt5
+echo "Installing PyQt5"
+pip3 install pyqt5
+
 # Install program_list packages
 echo "Installing program_list packages"
 for program in "${program_list[@]}"; do
@@ -44,7 +48,7 @@ for program in "${program_list[@]}"; do
         echo "$program already installed"
     else
         echo "Installing $program package"
-        sudo pip3 install "$program"
+        pip3 install "$program"
     fi
 done
 
