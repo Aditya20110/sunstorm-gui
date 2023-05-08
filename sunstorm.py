@@ -296,7 +296,7 @@ def prep_restore(ipsw, blob, boardconfig, kpp, legacy, skip_baseband, extra_ramd
     work = os.path.realpath(f'{ROOT}/{os.path.basename(work)}')
     print_info(f'Done! Files moved to "{work}"')
 
-    futurerestore_args = ['futurerestore', '-t', blob, '--use-pwndfu', '--skip-blob', '--rdsk', f'{work}/ramdisk.im4p', '--rkrn', f'{work}/krnl.im4p', '--latest-sep', '--no-baseband' if skip_baseband else '--latest-baseband', ipsw]
+    futurerestore_args = ['sudo futurerestore', '-t', blob, '--use-pwndfu', '--skip-blob', '--rdsk', f'{work}/ramdisk.im4p', '--rkrn', f'{work}/krnl.im4p', '--latest-sep', '--no-baseband' if skip_baseband else '--latest-baseband', ipsw]
     futurerestore_args_string = ' '.join(futurerestore_args)
 
     print_info('You can restore the device anytime by running the following command with the device in a pwndfu state:')
