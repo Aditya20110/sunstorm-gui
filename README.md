@@ -11,6 +11,9 @@ sudo bash install.sh
 
 # if u have any issue,open issue,if u want to contribute, make pull request
 
+# u can also connect with me on discord if any issue 
+
+Aditya2011#2218
 
 # guide for gui is here https://youtu.be/omqwbnMOZoI
 
