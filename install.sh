@@ -25,9 +25,9 @@ fi
 echo "Updating Homebrew"
 brew update >/dev/null
 echo "Installing required packages"
-brew install build-essential openssl libssl-dev curl libbz2 libbz2-dev readline \
-    libreadline-dev libusb libusb-dev libxml2 libxml2-dev libzip libzip-dev cmake \
-    python3 ncurses unzip libffi libffi-dev liblzma liblzma-dev ossp-uuid
+brew install openssl libssl-dev curl libbz2 libbz2-dev readline libreadline-dev \
+    libusb libusb-dev libxml2 libxml2-dev libzip libzip-dev cmake python3 ncurses \
+    unzip libffi libffi-dev liblzma liblzma-dev ossp-uuid xcb-util
 
 # Install hfsplus package
 if command -v hfsplus >/dev/null 2>&1; then
@@ -48,7 +48,36 @@ for program in "${program_list[@]}"; do
         echo "$program already installed"
     else
         echo "Installing $program package"
-        pip3 install "$program"
+        # Modify the installation command for each program accordingly
+        case $program in
+            futurerestore)
+                brew install futurerestore
+                ;;
+            img4tool)
+                brew install img4tool
+                ;;
+            Kernel64Patcher)
+                brew install Kernel64Patcher
+                ;;
+            iBoot64Patcher)
+                brew install iBoot64Patcher
+                ;;
+            ldid)
+                brew install ldid
+                ;;
+            asr64_patcher)
+                brew install asr64_patcher
+                ;;
+            restored_external64_patcher)
+                brew install restored_external64_patcher
+                ;;
+            hfsplus)
+                echo "hfsplus is already installed using Homebrew"
+                ;;
+            *)
+                echo "Unknown program: $program"
+                ;;
+        esac
     fi
 done
 
