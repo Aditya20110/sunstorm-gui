@@ -74,5 +74,9 @@ done
 echo "installing pyqt5"
 pip install pyqt5
 
+# fix shitty xcb error!
+echo "fixing xcb error"
+sudo apt-get install libxcb-xinerama0
+
 echo "Done! All dependencies are installed"
 echo "Made by Aditya:)"
